@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(floam)
 
 set(CMAKE_BUILD_TYPE "Release")
-set(CMAKE_CXX_FLAGS "-std=c++11")
+set(CMAKE_CXX_FLAGS "-std=c++14")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
 find_package(catkin REQUIRED COMPONENTS
@@ -50,16 +50,17 @@ catkin_package(
   CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs
   DEPENDS EIGEN3 PCL Ceres 
   INCLUDE_DIRS include
+  LIBRARIES floam
 )
 
+add_library(floam src/laserProcessingClass.cpp src/lidar.cpp src/lidarOptimization.cpp src/odomEstimationClass.cpp src/laserMappingClass.cpp)
 
+add_executable(floam_laser_processing_node src/laserProcessingNode.cpp)
+target_link_libraries(floam_laser_processing_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
-add_executable(floam_laser_processing_node src/laserProcessingNode.cpp src/laserProcessingClass.cpp src/lidar.cpp)
-target_link_libraries(floam_laser_processing_node ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+add_executable(floam_odom_estimation_node src/odomEstimationNode.cpp)
+target_link_libraries(floam_odom_estimation_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
-add_executable(floam_odom_estimation_node src/odomEstimationNode.cpp src/lidarOptimization.cpp src/lidar.cpp src/odomEstimationClass.cpp)
-target_link_libraries(floam_odom_estimation_node ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
-
-add_executable(floam_laser_mapping_node src/laserMappingNode.cpp src/laserMappingClass.cpp src/lidar.cpp)
-target_link_libraries(floam_laser_mapping_node ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+add_executable(floam_laser_mapping_node src/laserMappingNode.cpp)
+target_link_libraries(floam_laser_mapping_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
