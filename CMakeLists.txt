@@ -5,17 +5,17 @@ set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")
 set(CMAKE_CXX_FLAGS_RELEASE "-O3 -Wall -g")
 
-find_package(catkin REQUIRED COMPONENTS
-  geometry_msgs
-  nav_msgs
-  sensor_msgs
-  roscpp
-  rospy
-  rosbag
-  std_msgs
-  tf
-  eigen_conversions
-)
+# find_package(catkin REQUIRED COMPONENTS
+  # geometry_msgs
+  # nav_msgs
+  # sensor_msgs
+  # roscpp
+  # rospy
+  # rosbag
+  # std_msgs
+  # tf
+  # eigen_conversions
+# )
 
 find_package(Eigen3)
 if(NOT EIGEN3_FOUND)
@@ -33,7 +33,7 @@ find_package(Ceres REQUIRED)
 
 include_directories(
   include
-  ${catkin_INCLUDE_DIRS} 
+  # ${catkin_INCLUDE_DIRS} 
   ${PCL_INCLUDE_DIRS}
   ${CERES_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIRS}
@@ -46,21 +46,21 @@ link_directories(
 )
 
 
-catkin_package(
-  CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs
-  DEPENDS EIGEN3 PCL Ceres 
-  INCLUDE_DIRS include
-  LIBRARIES floam
-)
+# catkin_package(
+  # CATKIN_DEPENDS geometry_msgs nav_msgs roscpp rospy std_msgs
+  # DEPENDS EIGEN3 PCL Ceres 
+  # INCLUDE_DIRS include
+  # LIBRARIES floam
+# )
 
 add_library(floam src/laserProcessingClass.cpp src/lidar.cpp src/lidarOptimization.cpp src/odomEstimationClass.cpp src/laserMappingClass.cpp)
 
-add_executable(floam_laser_processing_node src/laserProcessingNode.cpp)
-target_link_libraries(floam_laser_processing_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+#add_executable(floam_laser_processing_node src/laserProcessingNode.cpp)
+#target_link_libraries(floam_laser_processing_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
-add_executable(floam_odom_estimation_node src/odomEstimationNode.cpp)
-target_link_libraries(floam_odom_estimation_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+#add_executable(floam_odom_estimation_node src/odomEstimationNode.cpp)
+#target_link_libraries(floam_odom_estimation_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
-add_executable(floam_laser_mapping_node src/laserMappingNode.cpp)
-target_link_libraries(floam_laser_mapping_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
+#add_executable(floam_laser_mapping_node src/laserMappingNode.cpp)
+#target_link_libraries(floam_laser_mapping_node floam ${EIGEN3_LIBRARIES} ${catkin_LIBRARIES} ${PCL_LIBRARIES} ${CERES_LIBRARIES})
 
